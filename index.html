@@ -11,14 +11,20 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        body {background-color: black;overflow: hidden;}
+        body {background-image: url("https://cdn.sforum.vn/sforum/wp-content/uploads/2022/12/2.jpg");overflow: hidden;}
         #btn-quay {
             border-radius: 100%;
             text-align: center;
-            font-size: 10em;
+            font-size: 12vw;
             font-weight: bold;
-            width: 90vh;
-            height: 90vh;
+            width: 100vh;
+            height: 98vh;
+            background-color: transparent;
+            outline: none;
+            border: none;
+        }
+        #btn-quay:hover {
+            background-color: #0d6dfd44;
         }
 
         .nhan {
@@ -38,12 +44,23 @@
             background-color: green;
         }
 
+        #btn-list {
+            position: fixed;
+            z-index: 99;
+            right: 0px;
+            bottom: 32px;
+            color: white;
+            background-color: green;
+        }
+
+        p.couple {font-size: 1.25em;}
+
         /* customizable snowflake styling */
         .snowflake {
-            color: #000;
+            color: #fff;
             font-size: 3em;
             font-family: Arial;
-            text-shadow: 0 0 1px #fff;
+            text-shadow: 0 0 1px #000;
         }
 
         @-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@-webkit-keyframes snowflakes-shake{0%{-webkit-transform:translateX(0px);transform:translateX(0px)}50%{-webkit-transform:translateX(80px);transform:translateX(80px)}100%{-webkit-transform:translateX(0px);transform:translateX(0px)}}@keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%{transform:translateX(0px)}50%{transform:translateX(80px)}100%{transform:translateX(0px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}
@@ -63,7 +80,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="closeModal();">Chơi tiếp</button>
-                    <button type="button" class="btn btn-secondary" onclick="$('#btn-reset').trigger('click');">Chơi lại nhé!</button>
+                    <button type="button" class="btn btn-secondary btn-playagain" style="display: none;" onclick="$('#btn-reset').trigger('click');">Chơi lại nhé!</button>
                 </div>
             </div>
         </div>
@@ -148,7 +165,8 @@
                 </div>
             </div>
         </main>
-        <button id="btn-setting" value="Setting">Setting</button>
+        <button id="btn-setting">Setting</button>
+        <button id="btn-list">View</button>
     </body>
 </html>
     <script>
@@ -160,8 +178,6 @@
             keyboard: false
         });
         $(document).ready(function () {
-
-            
 
             var initDS = [
                 'Đoàn Nguyên',
@@ -200,11 +216,13 @@
 
                 if (dsTang[dsTang.length - 1] == dsNhan[dsNhan.length - 1]) {
                     $('#btn-luu').trigger('click');
+                    alert('Lưu thành công');
                 } else {
                     localStorage.setItem('dsTang', dsTang);
                     localStorage.setItem('dsNhan', dsNhan);
                     localStorage.setItem('dsTangBackup', dsTang);
                     localStorage.setItem('dsNhanBackup', dsNhan);
+                    alert('Lưu thành công');
                     return;
                 }
             });
@@ -212,6 +230,7 @@
             $('#btn-reset').click(function () {
                 $('#congratulationModal .modal-body').html('');
                 congratulationModal.hide();
+                localStorage.clear();
                 localStorage.setItem('ds', initDS);
                 $('#danh-sach').val(initDS.join(','));
                 $('#btn-luu').trigger('click');
@@ -228,9 +247,9 @@
                 for (i = 0; i < soNguoi; i++) {
                     if (i < dsTang.length) {
                         if (soNguoi > 1) {
-                            html += '<p>' + (i + 1) + '. <span class="tang">' + dsTang[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhan[i] + '</span></p>';
+                            html += '<p class="couple">' + (i + 1) + '. <span class="tang">' + dsTang[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhan[i] + '</span></p>';
                         } else {
-                            html += '<p><span class="tang">' + dsTang[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhan[i] + '</span></p>';
+                            html += '<p class="couple"><span class="tang">' + dsTang[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhan[i] + '</span></p>';
                         }
                     }
                 }
@@ -243,7 +262,7 @@
 
                 $('#btn-quay').attr('disabled', 'disabled');
 
-                let wait = 1;
+                let wait = 3;
                 const interval = setInterval(function () {
                     $('#btn-quay').html(wait);
                     if (wait == 0) {
@@ -255,24 +274,44 @@
                         if (!isEndGame) {
                             $('#congratulationModal .modal-body').html(html + $('.snowAnimation').html());
                             congratulationModal.show();
+                            $('#congratulationModal .modal-body .btn-playagain').hide();
                         } else {
                             let dsTangBackup = localStorage.getItem('dsTangBackup').split(',');
                             let dsNhanBackup = localStorage.getItem('dsNhanBackup').split(',');
-                            html = '<h3>Tổng kết các cặp thành viên tặng và nhận quà: </h3>';
+                            html = '';
                             for (i = 0; i < dsTangBackup.length; i++) {
-                                html += '<p>' + (i + 1) + '. <span class="tang">' + dsTangBackup[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhanBackup[i] + '</span></p>';
+                                html += '<p class="couple">' + (i + 1) + '. <span class="tang">' + dsTangBackup[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhanBackup[i] + '</span></p>';
                             }
                             $('#congratulationModal .modal-body').html(html + $('.snowAnimation').html());
                             congratulationModal.show();
+                            $('#congratulationModal .modal-body .btn-playagain').show();
                         }
                     }
                     wait = wait - 1;
-                }, 1000);
+                }, 500);
 
             });
 
             $('#btn-setting').click(function (e) {
                 settingModal.show();
+            });
+
+            $('#btn-list').click(function (e) {
+                let dsTang = localStorage.getItem('dsTang').split(',');
+                let dsNhan = localStorage.getItem('dsNhan').split(',');
+                let dsTangBackup = localStorage.getItem('dsTangBackup').split(',');
+                let dsNhanBackup = localStorage.getItem('dsNhanBackup').split(',');
+                html = '';
+                for (i = 0; i < ds.length; i++) {
+                    if (dsTang.indexOf(dsTangBackup[i]) == -1) {
+                        html += '<p class="couple">' + (i + 1) + '. <span class="tang">' + dsTangBackup[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhanBackup[i] + '</span></p>';
+                    }
+                }
+                if (html == '') {
+                    html += 'Chưa có ai chơi nơi bạn ơi';
+                }
+                $('#congratulationModal .modal-body').html(html + $('.snowAnimation').html());
+                congratulationModal.show();
             });
 
             let ds = localStorage.getItem('ds');
@@ -282,8 +321,6 @@
                 $('#danh-sach').val(ds);
                 localStorage.setItem('ds', ds);
             }
-
-            
 
         });
 
