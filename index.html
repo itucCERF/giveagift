@@ -260,8 +260,6 @@
                 localStorage.setItem('dsTang', dsTang);
                 localStorage.setItem('dsNhan', dsNhan);
 
-                $('#btn-quay').attr('disabled', 'disabled');
-
                 let wait = 3;
                 const interval = setInterval(function () {
                     $('#btn-quay').html(wait);
@@ -302,7 +300,7 @@
                 let dsTangBackup = localStorage.getItem('dsTangBackup').split(',');
                 let dsNhanBackup = localStorage.getItem('dsNhanBackup').split(',');
                 html = '';
-                for (i = 0; i < ds.length; i++) {
+                for (i = 0; i < dsTangBackup.length; i++) {
                     if (dsTang.indexOf(dsTangBackup[i]) == -1) {
                         html += '<p class="couple">' + (i + 1) + '. <span class="tang">' + dsTangBackup[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhanBackup[i] + '</span></p>';
                     }
