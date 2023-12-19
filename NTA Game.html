@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NTA Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        #btn-quay {
+            border-radius: 100%;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            font-size: 95px;
+            padding: 70px 0;
+            font-weight: bold;
+        }
+
+        #hien-thi p {
+            font-size: 30px;
+
+            font-weight: bold;
+        }
+
+        .nhan {
+            color: darkred;
+        }
+
+        .tang {
+            color: green !important;
+        }
+    </style>
+</head>
+
+<body cz-shortcut-listen="true">
+    <header data-bs-theme="dark">
+        <div class="text-bg-dark collapse" id="navbarHeader">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-md-7 py-4">
+                        <h5>Danh sách</h5>
+                        <textarea id="danh-sach" class="form-control" wrap="hard" cols="1" rows="5">
+                            </textarea>
+
+                    </div>
+                    <div class="col-sm-4 offset-md-1 py-4">
+                        <h4>Số người</h4>
+                        <input type="number" step="1" id="so-nguoi" value="1" />
+                        <div style="margin-top: 10px">
+                            <button id="btn-luu" class="btn btn-secondary" style="width: 60px; margin-right: 10px">
+                                Lưu
+                            </button>
+                            <button id="btn-reset" class="btn btn-secondary" style="width: 60px">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <strong>NTA GAME</strong>
+                </a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+
+        <div class="album py-5 bg-body-tertiary text-center" style="height: 93vh;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <p>
+                            <button id="btn-quay" class="btn btn-primary my-2">QUAY</button>
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="col" id="hien-thi"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        $(document).ready(function () {
+
+            var initDS = [
+                'Đoàn Nguyên',
+                'Phan Quốc Huy',
+                'Hoàng Hồ Vĩnh Thụy',
+                'Hoàng Tấn Nguyên',
+                'Đào Văn Bảo Thắng',
+                'Dương Đình Tuân',
+                'Nguyễn Trung Thành',
+                'Nguyễn Đăng Quang',
+                'Ngô Văn Đức',
+                'Phan Thiên Hoàng',
+                'Nguyễn Đình Hải Triều',
+                'Nguyễn Xuân Trung',
+                'Trương Thị Trà My',
+                'Nguyễn Quốc Vũ',
+                'Nguyễn Sanh Toàn',
+                'Nguyễn Thành Nhân',
+                'Nguyễn Minh Hoàng'
+            ]
+
+            $('#btn-luu').click(function (e) {
+                let myDS = $('#danh-sach').val().split(',');
+
+                localStorage.setItem('ds', myDS);
+
+                let dsNhanTam = [...myDS].sort(() => .5 - Math.random());
+                let dsTang = [...myDS].sort(() => .5 - Math.random());
+                let dsNhan = [];
+                for (i = 0; i < dsTang.length; i++) {
+                    let nguoiTang = dsTang[i];
+                    let nguoiNhan = dsNhanTam.filter((value) => value != nguoiTang)[0] ?? dsNhanTam[0];
+                    dsNhanTam.splice(dsNhanTam.indexOf(nguoiNhan, 0), 1);
+                    dsNhan.push(nguoiNhan);
+                }
+
+                if (dsTang[dsTang.length - 1] == dsNhan[dsNhan.length - 1]) {
+                    $('#btn-luu').trigger('click');
+                } else {
+                    localStorage.setItem('dsTang', dsTang);
+                    localStorage.setItem('dsNhan', dsNhan);
+                    localStorage.setItem('dsTangBackup', dsTang);
+                    localStorage.setItem('dsNhanBackup', dsNhan);
+                    // for (i = 0; i < dsTang.length; i++) {
+                    //     if (dsTang[i] == dsNhan[i]) {
+                    //         alert('ok');
+                    //         $('#btn-luu').trigger('click');
+                    //     }
+                    // }
+                    return;
+                }
+            });
+            
+            $('#btn-reset').click(function () {
+                localStorage.setItem('ds', initDS);
+                $('#danh-sach').val(initDS.join(','));
+                $('#btn-luu').trigger('click');
+            });
+
+            $('#btn-quay').click(function (e) {
+                $('#btn-quay').attr('disabled', 'disabled');
+                let soNguoi = $('#so-nguoi').val();
+                let html = '<h3>Xin mời cặp thành viên tặng và nhận: </h3>';
+                if (soNguoi > 1) {
+                    html = '<h3>Xin mời các cặp thành viên tặng và nhận quà: </h3>';
+                }
+                let dsTang = localStorage.getItem('dsTang').split(',');
+                let dsNhan = localStorage.getItem('dsNhan').split(',');
+                let isEndGame = (dsTang.length == 1 && dsTang[0] == '');
+
+                for (i = 0; i < soNguoi; i++) {
+                    if (i < dsTang.length) {
+                        if (soNguoi > 1) {
+                            html += '<p>' + (i + 1) + '. <span class="tang">' + dsTang[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhan[i] + '</span></p>';
+                        } else {
+                            html += '<p><span class="tang">' + dsTang[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhan[i] + '</span></p>';
+                        }
+                    }
+                }
+                for (i = 0; i < soNguoi; i++) {
+                    dsTang.splice(0, 1);
+                    dsNhan.splice(0, 1);
+                }
+                localStorage.setItem('dsTang', dsTang);
+                localStorage.setItem('dsNhan', dsNhan);
+
+                $('#btn-quay').attr('disabled', 'disabled');
+
+                let wait = 1;
+                const interval = setInterval(function () {
+                    $('#btn-quay').html(wait);
+                    if (wait == 0) {
+                        clearInterval(interval);
+
+                        $('#btn-quay').removeAttr('disabled');
+                        $('#btn-quay').html('QUAY');
+
+                        if (!isEndGame) {
+                            $('#hien-thi').html(html);
+                        } else {
+                            let dsTangBackup = localStorage.getItem('dsTangBackup').split(',');
+                            let dsNhanBackup = localStorage.getItem('dsNhanBackup').split(',');
+                            html = '<h3>Tổng kết các cặp thành viên tặng và nhận quà: </h3>';
+                            for (i = 0; i < dsTangBackup.length; i++) {
+                                html += '<p>' + (i + 1) + '. <span class="tang">' + dsTangBackup[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhanBackup[i] + '</span></p>';
+                            }
+                            $('#hien-thi').html(html);
+                        }
+                    }
+                    wait = wait - 1;
+                }, 1000);
+
+            });
+
+            let ds = localStorage.getItem('ds');
+            if (!ds) {
+                $('#btn-reset').trigger('click');
+            } else {
+                $('#danh-sach').val(ds);
+                localStorage.setItem('ds', ds);
+            }
+
+        });
+    </script>
+
+
+</body>
+
+</html>
