@@ -11,20 +11,14 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        body {background-color: black;overflow: hidden;}
         #btn-quay {
             border-radius: 100%;
-            width: 300px;
-            height: 300px;
             text-align: center;
-            font-size: 95px;
-            padding: 70px 0;
+            font-size: 10em;
             font-weight: bold;
-        }
-
-        #hien-thi p {
-            font-size: 30px;
-
-            font-weight: bold;
+            width: 90vh;
+            height: 90vh;
         }
 
         .nhan {
@@ -34,67 +28,136 @@
         .tang {
             color: green !important;
         }
+
+        #btn-setting {
+            position: fixed;
+            z-index: 99;
+            right: 0px;
+            bottom: 0px;
+            color: white;
+            background-color: green;
+        }
+
+        /* customizable snowflake styling */
+        .snowflake {
+            color: #000;
+            font-size: 3em;
+            font-family: Arial;
+            text-shadow: 0 0 1px #fff;
+        }
+
+        @-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@-webkit-keyframes snowflakes-shake{0%{-webkit-transform:translateX(0px);transform:translateX(0px)}50%{-webkit-transform:translateX(80px);transform:translateX(80px)}100%{-webkit-transform:translateX(0px);transform:translateX(0px)}}@keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%{transform:translateX(0px)}50%{transform:translateX(80px)}100%{transform:translateX(0px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}
+        
     </style>
 </head>
 
-<body cz-shortcut-listen="true">
-    <header data-bs-theme="dark">
-        <div class="text-bg-dark collapse" id="navbarHeader">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-8 col-md-7 py-4">
-                        <h5>Danh sách</h5>
-                        <textarea id="danh-sach" class="form-control" wrap="hard" cols="1" rows="5">
-                            </textarea>
+    <div class="modal" tabindex="-1" id="congratulationModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xin mời cặp thành viên tặng và nhận quà</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-primary" onclick="$('#btn-reset').trigger('click');">Chơi lại nhé!</button></div>
+            </div>
+        </div>
+    </div>
 
-                    </div>
-                    <div class="col-sm-4 offset-md-1 py-4">
-                        <h4>Số người</h4>
-                        <input type="number" step="1" id="so-nguoi" value="1" />
-                        <div style="margin-top: 10px">
-                            <button id="btn-luu" class="btn btn-secondary" style="width: 60px; margin-right: 10px">
-                                Lưu
-                            </button>
-                            <button id="btn-reset" class="btn btn-secondary" style="width: 60px">
-                                Reset
-                            </button>
+    <div class="modal" tabindex="-1" id="settingModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cấu hình</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-7 py-4">
+                            <h5>Danh sách</h5>
+                            <textarea id="danh-sach" class="form-control" wrap="hard" cols="1" rows="5"></textarea>
+                        </div>
+                        <div class="col-sm-4 offset-md-1 py-4">
+                            <h4>Số người</h4>
+                            <input type="number" step="1" id="so-nguoi" value="1" />
+                            <div style="margin-top: 10px">
+                                <button id="btn-luu" class="btn btn-secondary" style="width: 60px; margin-right: 10px">
+                                    Lưu
+                                </button>
+                                <button id="btn-reset" class="btn btn-secondary" style="width: 60px">
+                                    Reset
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="navbar navbar-dark bg-dark shadow-sm">
-            <div class="container">
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <strong>NTA GAME</strong>
-                </a>
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </div>
-    </header>
-    <main>
+    </div>
 
-        <div class="album py-5 bg-body-tertiary text-center" style="height: 93vh;">
+    <div class="snowAnimation" style="display: none;">
+        <div class="snowflakes" aria-hidden="true">
+            <div class="snowflake">
+            ❅
+            </div>
+            <div class="snowflake">
+            ❅
+            </div>
+            <div class="snowflake">
+            ❆
+            </div>
+            <div class="snowflake">
+            ❄
+            </div>
+            <div class="snowflake">
+            ❅
+            </div>
+            <div class="snowflake">
+            ❆
+            </div>
+            <div class="snowflake">
+            ❄
+            </div>
+            <div class="snowflake">
+            ❅
+            </div>
+            <div class="snowflake">
+            ❆
+            </div>
+            <div class="snowflake">
+            ❄
+            </div>
+          </div>
+    </div>
+
+
+    <body cz-shortcut-listen="true">
+        <main>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-12 text-center">
                         <p>
                             <button id="btn-quay" class="btn btn-primary my-2">QUAY</button>
                         </p>
                     </div>
-                    <div class="col-md-7">
-                        <div class="col" id="hien-thi"></div>
-                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+        <button id="btn-setting" value="Setting">Setting</button>
+    </body>
+</html>
     <script>
         $(document).ready(function () {
+
+            var congratulationModal = new bootstrap.Modal(document.getElementById('congratulationModal'), {
+                keyboard: false
+            });
+
+            var settingModal = new bootstrap.Modal(document.getElementById('settingModal'), {
+                keyboard: false
+            });
 
             var initDS = [
                 'Đoàn Nguyên',
@@ -138,17 +201,13 @@
                     localStorage.setItem('dsNhan', dsNhan);
                     localStorage.setItem('dsTangBackup', dsTang);
                     localStorage.setItem('dsNhanBackup', dsNhan);
-                    // for (i = 0; i < dsTang.length; i++) {
-                    //     if (dsTang[i] == dsNhan[i]) {
-                    //         alert('ok');
-                    //         $('#btn-luu').trigger('click');
-                    //     }
-                    // }
                     return;
                 }
             });
             
             $('#btn-reset').click(function () {
+                $('#congratulationModal .modal-body').html('');
+                congratulationModal.hide();
                 localStorage.setItem('ds', initDS);
                 $('#danh-sach').val(initDS.join(','));
                 $('#btn-luu').trigger('click');
@@ -157,10 +216,7 @@
             $('#btn-quay').click(function (e) {
                 $('#btn-quay').attr('disabled', 'disabled');
                 let soNguoi = $('#so-nguoi').val();
-                let html = '<h3>Xin mời cặp thành viên tặng và nhận: </h3>';
-                if (soNguoi > 1) {
-                    html = '<h3>Xin mời các cặp thành viên tặng và nhận quà: </h3>';
-                }
+                let html = '';
                 let dsTang = localStorage.getItem('dsTang').split(',');
                 let dsNhan = localStorage.getItem('dsNhan').split(',');
                 let isEndGame = (dsTang.length == 1 && dsTang[0] == '');
@@ -193,7 +249,8 @@
                         $('#btn-quay').html('QUAY');
 
                         if (!isEndGame) {
-                            $('#hien-thi').html(html);
+                            $('#congratulationModal .modal-body').html(html + $('.snowAnimation').html());
+                            congratulationModal.show();
                         } else {
                             let dsTangBackup = localStorage.getItem('dsTangBackup').split(',');
                             let dsNhanBackup = localStorage.getItem('dsNhanBackup').split(',');
@@ -201,12 +258,17 @@
                             for (i = 0; i < dsTangBackup.length; i++) {
                                 html += '<p>' + (i + 1) + '. <span class="tang">' + dsTangBackup[i] + '</span> <i class="icon">&rarr;</i> <span class="nhan">' + dsNhanBackup[i] + '</span></p>';
                             }
-                            $('#hien-thi').html(html);
+                            $('#congratulationModal .modal-body').html(html + $('.snowAnimation').html());
+                            congratulationModal.show();
                         }
                     }
                     wait = wait - 1;
                 }, 1000);
 
+            });
+
+            $('#btn-setting').click(function (e) {
+                settingModal.show();
             });
 
             let ds = localStorage.getItem('ds');
@@ -218,9 +280,4 @@
             }
 
         });
-    </script>
-
-
-</body>
-
-</html>
+</script>
