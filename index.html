@@ -61,7 +61,10 @@
                 <div class="modal-body">
                     <p></p>
                 </div>
-                <div class="modal-footer"><button type="button" class="btn btn-primary" onclick="$('#btn-reset').trigger('click');">Chơi lại nhé!</button></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="closeModal();">Chơi tiếp</button>
+                    <button type="button" class="btn btn-secondary" onclick="$('#btn-reset').trigger('click');">Chơi lại nhé!</button>
+                </div>
             </div>
         </div>
     </div>
@@ -149,15 +152,16 @@
     </body>
 </html>
     <script>
+        var congratulationModal = new bootstrap.Modal(document.getElementById('congratulationModal'), {
+            keyboard: false
+        });
+
+        var settingModal = new bootstrap.Modal(document.getElementById('settingModal'), {
+            keyboard: false
+        });
         $(document).ready(function () {
 
-            var congratulationModal = new bootstrap.Modal(document.getElementById('congratulationModal'), {
-                keyboard: false
-            });
-
-            var settingModal = new bootstrap.Modal(document.getElementById('settingModal'), {
-                keyboard: false
-            });
+            
 
             var initDS = [
                 'Đoàn Nguyên',
@@ -279,5 +283,11 @@
                 localStorage.setItem('ds', ds);
             }
 
+            
+
         });
+
+        function closeModal() {
+            congratulationModal.hide();
+        }
 </script>
