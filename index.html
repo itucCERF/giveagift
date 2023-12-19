@@ -91,7 +91,7 @@
                     <p></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="closeModal();">Chơi tiếp</button>
+                    <button type="button" class="btn btn-primary btn-play-continue" onclick="closeModal();">Chơi tiếp</button>
                     <button type="button" class="btn btn-secondary btn-playagain" style="display: none;" onclick="$('#btn-reset').trigger('click');">Chơi lại nhé!</button>
                 </div>
             </div>
@@ -282,6 +282,7 @@
                         if (!isEndGame) {
                             $('#congratulationModal .modal-body').html(html + $('.snowAnimation').html());
                             congratulationModal.show();
+                            $('.btn-play-continue').show();
                             $('#congratulationModal .modal-body .btn-playagain').hide();
                         } else {
                             let dsTangBackup = localStorage.getItem('dsTangBackup').split(',');
@@ -292,6 +293,7 @@
                             }
                             $('#congratulationModal .modal-body').html(html + $('.snowAnimation').html());
                             congratulationModal.show();
+                            $('.btn-play-continue').hide();
                             $('#congratulationModal .modal-body .btn-playagain').show();
                         }
                     }
@@ -305,6 +307,7 @@
             });
 
             $('#btn-list').click(function (e) {
+                $('.btn-play-continue').hide();
                 let dsTang = localStorage.getItem('dsTang').split(',');
                 let dsNhan = localStorage.getItem('dsNhan').split(',');
                 let dsTangBackup = localStorage.getItem('dsTangBackup').split(',');
